@@ -11,21 +11,34 @@
                 text: "グラフの名前"
                 size_hint_y: 0.2
             Label:
-                text: "x軸"
+                text: "x軸の名前"
                 size_hint_y: 0.4
             Label:
-                text:"y軸"
+                text:"y軸の名前"
                 size_hint_y: 0.4
 
         BoxLayout:
             orientation: 'vertical'
             spacing: 30
             size_hint_x: 0.5
-            TextInput:
-                id: graph_name
-                multiline: False
+            BoxLayout:
                 size_hint_y: 0.2
-                hint_text: "グラフの名前"
+                TextInput:
+                    size_hint_x: 0.4
+                    id: graph_name
+                    multiline: False
+                    hint_text: "グラフの名前(空欄でも可)"
+                Label:
+                    text: "グラフの本数"
+                    size_hint_x: 0.3
+                Button:
+                    text: "+"
+                    size_hint_x: 0.1
+                    on_press: root.on_press_plus()
+                Button:
+                    text: "-"
+                    size_hint_x: 0.1
+                    on_press: root.on_press_minus()
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: 0.4
@@ -33,11 +46,14 @@
                     id: x_name
                     multiline: False
                     size_hint_y: 0.3
-                    hint_text: "x軸の名前"
-                TextInput:
-                    id: x_value
+                    hint_text: "x軸の名前(空欄でも可)"
+                BoxLayout:
+                    id: num_x
                     size_hint_y: 0.7
-                    hint_text: "x軸の値(例. 1,2,3,4,5,...)"
+                    orientation: 'vertical'
+                    TextInput:
+                        id: x_value
+                        hint_text: "x軸の値(1,2,3,4,5,... のように入力してください)"
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: 0.4
@@ -45,22 +61,45 @@
                     id: y_name
                     multiline: False
                     size_hint_y: 0.3
-                    hint_text: "y軸の名前"
-                TextInput:
-                    id: y_value
+                    hint_text: "y軸の名前(空欄でも可)"
+                BoxLayout:
+                    id: num_y
                     size_hint_y: 0.7
-                    hint_text: "y軸の値(例.10,25,40,55,...)"
+                    orientation: 'vertical'
+                    TextInput:
+                        id: y_value
+                        hint_text: "y軸の値(10,25,40,55,... のように入力してください)"
                 
-        Button:
-            text: '作図する'
-            on_release: root.manager.current = 'graph_view'
+        BoxLayout:
+            padding: 30, 10
             size_hint_x: 0.3
-            font_size: 25
+            orientation: 'vertical'
+            BoxLayout:
+                size_hint_y: 0.2
+                Label:
+                    text: "近似曲線を引く"
+                CheckBox:
+                    id: curve_check
+                    state: 'down'
+                    on_press: root.on_press_curve_check()
+            BoxLayout:
+                size_hint_y: 0.2
+                Label:
+                    text: "近似直線を引く"
+                CheckBox:
+                    id: line_check
+                    on_press: root.on_press_line_check()
 
-        # Label:
-        #     text: "Main Menu"
-        #     size_hint: 1.0, 0.3
-        #     font_size: 30
-        # Label:
-        #     text: ""
-        #     size_hint: 1.0, 0.25
+            Button:
+                text: '作図する'
+                on_press: root.on_click()
+                size_hint_y: 0.6
+                font_size: 25
+
+<GraphView>:
+    BoxLayout:
+        id: graph_layout
+        Button:
+            text: "保存する"
+            size_hint_x: 0.1
+            on_press: root.save_photo()
